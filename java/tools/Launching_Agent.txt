@@ -1,0 +1,8 @@
+http://172.19.17.78/rcgi.bin/jvmCmd?cmd=start&runCmd=%20-heapsize%2010M%20-classpath%20/usr/eWonOpengateAgent.jar%20-emain%20amplia.ewon.opengateagent.OGAgentMain
+
+http://172.19.17.78/rcgi.bin/jvmCmd?cmd=stop
+
+
+#jvmrun file, place it in /usr
+#This file will trigger execution of the JVM at boot time
+-watchon -heapsize 10M -classpath /usr/eWonOpengateAgent.jar -emain amplia.ewon.opengateagent.OGAgentMain

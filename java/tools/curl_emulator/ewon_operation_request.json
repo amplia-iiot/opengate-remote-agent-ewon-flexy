@@ -1,0 +1,14 @@
+{
+    "operation" :
+    {
+        "request" :
+        {
+            "id" : "f508ce84-01e9-11e5-a322-1697f925ec7b",
+            "deviceId": "device_1",
+            "path" : [],
+            "timestamp" : 1432454275000,
+            "name" : "REBOOT_EQUIPMENT",
+            "parameters": []
+        }
+    }
+}

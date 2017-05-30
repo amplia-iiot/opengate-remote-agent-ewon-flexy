@@ -1,0 +1,85 @@
+<!--
+Copyright © 2015, Oracle and/or its affiliates.  All rights reserved.
+
+This software is dual-licensed to you under the MIT License (MIT) and the Universal Permissive License (UPL).  See the LICENSE file in the root directory for license terms.  You may choose either license, or both.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Authorization</title>
+        <script>
+
+            function login() {
+                var ajaxRequest = new XMLHttpRequest();
+                ajaxRequest.onreadystatechange = function() {
+                    if (ajaxRequest.readyState === XMLHttpRequest.DONE) {
+                        if (ajaxRequest.status >= 200 && ajaxRequest.status < 300) {
+                            alert("Login completed");
+                            updateCredentials();
+                        } else {
+                            alert("Login failed: " + ajaxRequest.statusText);
+                        }
+                    }
+                };
+                ajaxRequest.open("POST", "/cookie/login", true);
+                ajaxRequest.send("login=" + encodeURIComponent(document.querySelector("#login").value) + "&password=" + encodeURIComponent(document.querySelector("#password").value));
+            }
+
+            function updateCredentials() {
+                var ajaxRequest = new XMLHttpRequest();
+                ajaxRequest.onreadystatechange = function() {
+                    if (ajaxRequest.readyState === XMLHttpRequest.DONE) {
+                        if (ajaxRequest.status === 200) {
+                            document.querySelector("#loginForm").style.display = 'none';
+                            document.querySelector("#logoutButton").style.display = '';
+                            document.querySelector("#credentials").style.display = '';
+                            document.querySelector("#credentials").textContent = ajaxRequest.responseText;
+                        } else {
+                            document.querySelector("#loginForm").style.display = '';
+                            document.querySelector("#logoutButton").style.display = 'none';
+                            document.querySelector("#credentials").style.display = 'none';
+                            document.querySelector("#credentials").textContent = "";
+                        }
+                    }
+                };
+                ajaxRequest.open("GET", "/cookie/checkAuthorization", true);
+                ajaxRequest.send();
+            }
+
+            function logout() {
+                var ajaxRequest = new XMLHttpRequest();
+                ajaxRequest.onreadystatechange = function() {
+                    if (ajaxRequest.readyState === XMLHttpRequest.DONE) {
+                        if (ajaxRequest.status === 200) {
+                            alert("Logout completed");
+                            updateCredentials();
+                        } else {
+                            alert("Logout failed: " + ajaxRequest.statusText);
+                        }
+                    }
+                };
+                ajaxRequest.open("GET", "/cookie/logout", true);
+                ajaxRequest.send();
+            }
+        </script>
+    </head>
+
+
+    <body onload="updateCredentials()">
+        <header>
+            <h1>Authorization</h1>
+
+            <div id="credentials"></div>
+
+            <div id="loginForm">
+                Type login - admin ; password - admin to become an administrator.<br>
+                Any other login, password pair logs you in as plain user.<br>
+                Login: <input type="text" id="login" value="test"><br>
+                Password: <input type="password" id="password" value="test"><br>
+                <button onclick="login()">Sign in</button>
+            </div>
+            <button id="logoutButton" onclick="logout()">Log out</button>
+        </header>
+    </body>
+</html>
